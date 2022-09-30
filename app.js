@@ -2,7 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 require('dotenv').config();
 
-const {userRouter} = require("./routes");
+const {userRouter, authRouter} = require("./routes");
 const {PORT, MONGO_URL} = require("./configs/configs");
 const {mainErrorHandler} = require("./errors");
 
@@ -15,6 +15,7 @@ app.get('/', (req, res) => {
 });
 
 app.use('/users', userRouter);
+app.use('/auth', authRouter);
 
 app.use(mainErrorHandler);
 

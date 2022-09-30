@@ -1,7 +1,5 @@
-const users = require("../dataBase/users");
-const User = require('../dataBase/User');
 const {ApiError} = require("../errors");
-const {userService} = require("../services");
+const {userService, authService} = require("../services");
 module.exports = {
 
     getAllUsers: async (req, res, next) => {
@@ -16,13 +14,7 @@ module.exports = {
 
     getUserById: async (req, res, next) => {
         try {
-            console.log('REQUEST get users/:userId PROCESSED');
-            const {userId} = req.params;
-            const user = await userService.getUserById(userId);
-            if (!user) {
-                next(new ApiError('User with this id doesnt exist', 400))
-            }
-
+            const {user} = req;
             res.json(user);
 
             next();
@@ -46,7 +38,8 @@ module.exports = {
 
     createUser: async (req, res, next) => {
         try {
-            const createdUser = await userService.createUser(req.body)
+            const hashPassword = await authService.hashPassword(req.body.password)
+            const createdUser = await userService.createUser({...req.body, password: hashPassword})
 
             res.json(createdUser);
 

@@ -10,6 +10,10 @@ module.exports = {
         return User.findById(filter);
     },
 
+    getOneByParams(filter) {
+        return User.findOne(filter);
+    },
+
     createUser(userObject) {
         return User.create(userObject);
     },
