@@ -1,17 +1,31 @@
 const {ApiError} = require("../errors");
 const {userService} = require("../services");
-const User = require('../dataBase/User')
+const {userValidators} = require("../validators");
 
 module.exports = {
+
+    userBodyValid: async (req, res, next) => {
+        try {
+            const validate = userValidators.newUserValidator.validate(req.body);
+
+            if(validate.error){
+                return next(new ApiError(validate.error.message, 400))
+            }
+
+            next();
+        } catch (e) {
+            next(e)
+        }
+    },
 
     uniqueUserEmail: async (req, res, next) => {
         try {
             const {email} = req.body;
             const {userId} = req.params;
 
-            const user = await userService.getOneByParams({email});
+            const user = await userService.getOneByParams({email, _id:{$ne: userId} });
 
-            if (user && user._id.toString() !== userId) {
+            if (user) {
                 return next(new ApiError('This email is already in use', 400));
             }
 
