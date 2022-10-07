@@ -7,17 +7,19 @@ module.exports = {
         return Auth.create(tokens)
     },
 
-    getOneWithUser(filter){
+    getOneWithUser(filter) {
         return Auth.findOne(filter).populate('user');
     },
 
-    getOneByParams(filter){
+    getOneByParams(filter) {
         return Auth.findOne(filter);
     },
 
-    deleteOneByParams(filter){
+    deleteOneByParams(filter) {
         return Auth.deleteOne(filter);
+    },
+
+    deleteManyByParams(filter) {
+        return Auth.deleteMany(filter);
     }
-
-
 }

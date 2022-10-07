@@ -14,12 +14,13 @@ userRouter.get('/:userId',
     userController.getUserById);
 
 userRouter.post('/',
-    userMldwr.userBodyValid,
+    userMldwr.userBodyValid('newUserValidator'),
     userMldwr.uniqueUserEmail,
     userController.createUser);
 
 userRouter.put('/:userId',
     commonMldwr.validIdMldwr('useId', 'params'),
+    userMldwr.userBodyValid('updateUserValidator'),
     authMldwr.isAccessTokenValid,
     userMldwr.isUserPresent(),
     userMldwr.uniqueUserEmail ,
