@@ -31,16 +31,18 @@ const loginUserValidator = Joi.object({
 });
 
 const userPasswordValidator = Joi.object({
-    password: passValidator.required().error(new ApiError('Wrong email or pass', 400)),
+    password: passValidator.required().error(new ApiError('Wrong pass', 400)),
 
 });
 
 const userEmailValidator = Joi.object({
-    email: emailValidator.required().error(new ApiError('Wrong email or pass', 400)),
+    email: emailValidator.required().error(new ApiError('Wrong email', 400)),
 })
 
 module.exports = {
     newUserValidator,
     updateUserValidator,
-    loginUserValidator
+    loginUserValidator,
+    userPasswordValidator,
+    userEmailValidator
 }

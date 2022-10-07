@@ -21,11 +21,14 @@ authRouter.post('/refresh',
     authController.refresh);
 
 authRouter.post('/password/forgot',
+    userMldwr.userBodyValid('userEmailValidator'),
     userMldwr.getUserDynamically('body', 'email'),
     authController.forgotPassword);
 
 authRouter.put('/password/forgot',
+    userMldwr.userBodyValid('userEmailValidator'),
     authMldwr.isActionTokenValid(tokenTypeEnum.FORGOT_PASSWORD),
+    authMldwr.checkPreviousPassword,
     authController.setNewPasswordForgot);
 
 

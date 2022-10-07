@@ -1,6 +1,6 @@
 const {AUTHORIZATION} = require("../constants/constants");
 const {ApiError} = require("../errors");
-const {authService, tokenService, actionTokenService} = require("../services");
+const {authService, tokenService, actionTokenService, previousPasswordService} = require("../services");
 const {REFRESH} = require("../constants/tokenType.enum");
 
 module.exports = {
@@ -62,7 +62,7 @@ module.exports = {
 
             const tokenInfo = await actionTokenService.getOneBySearchParamsWithUser({tokenType, token});
 
-            if(!tokenInfo){
+            if (!tokenInfo) {
                 return next(new ApiError('no valid token', 401))
             }
 
@@ -72,5 +72,26 @@ module.exports = {
         } catch (e) {
             next(e)
         }
-    }
+    },
+
+    checkPreviousPassword: async (req, res, next) => {
+        try {
+            const {user} = req.tokenInfo;
+            const {password} = req.body;
+            const oldPasswords = await previousPasswordService.getByUserId(user._id);
+
+            const promises = await Promise.allSettled([oldPasswords.map(old => tokenService.comparePasswords(password, old.password)),
+                tokenService.comparePasswords(password, user.password)]);
+
+            for (const {status} of promises){
+                if (status === 'fulfilled'){
+                    return next(new ApiError('choose a new password', 400))
+                }
+            }
+
+            next();
+        } catch (e) {
+            next(e)
+        }
+    },
 }
