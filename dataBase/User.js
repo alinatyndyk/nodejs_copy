@@ -1,4 +1,5 @@
 const {Schema, model} = require('mongoose');
+const tokenService = require("../services/token.service");
 
 const userSchema = new Schema({
     name: {type: String, trim: true, required: true},
@@ -10,3 +11,12 @@ const userSchema = new Schema({
 })
 
 module.exports = model('user', userSchema);
+
+userSchema.statics = {
+    async createUserWithHashPassword(userObject = {}) {
+        const hashPassword = await tokenService.hashPassword(userObject.password)
+        return this.create({...userObject, password: hashPassword});
+    }
+};
+
+userSchema.methods = {};

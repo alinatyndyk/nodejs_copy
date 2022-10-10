@@ -1,4 +1,5 @@
-const {userService, tokenService} = require("../services");
+const {userService} = require("../services");
+const {User} = require("../dataBase");
 module.exports = {
 
     getAllUsers: async (req, res, next) => {
@@ -37,8 +38,7 @@ module.exports = {
 
     createUser: async (req, res, next) => {
         try {
-            const hashPassword = await tokenService.hashPassword(req.body.password)
-            const createdUser = await userService.createUser({...req.body, password: hashPassword})
+            const createdUser = User.createUserWithHashPassword(req.body);
 
             res.json(createdUser);
 
