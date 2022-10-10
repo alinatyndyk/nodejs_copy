@@ -10,5 +10,6 @@ module.exports = {
 
     FRONTEND_URL: process.env.FRONTEND_URL || 'google.com',
 
-    ACTION_TOKEN_SECRET: process.env.ACTION_TOKEN_WORD|| 'ACTION_TOKEN'
+    ACTION_TOKEN_SECRET: process.env.ACTION_TOKEN_WORD|| 'ACTION_TOKEN',
+
 }

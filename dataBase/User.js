@@ -12,11 +12,6 @@ const userSchema = new Schema({
 
 module.exports = model('user', userSchema);
 
-userSchema.statics = {
-    async createUserWithHashPassword(userObject = {}) {
-        const hashPassword = await tokenService.hashPassword(userObject.password)
-        return this.create({...userObject, password: hashPassword});
-    }
-};
+userSchema.statics = {};
 
 userSchema.methods = {};

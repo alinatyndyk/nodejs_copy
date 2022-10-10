@@ -14,8 +14,8 @@ module.exports = {
         return User.findOne(filter);
     },
 
-    createUser(userObject) {
-        return User.create(userObject);
+    createUser(object) {
+        return User.create(object);
     },
 
     updateUserById(userId, newUserObject) {
